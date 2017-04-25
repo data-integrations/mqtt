@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "spec-version": "1.3"
+  },
+  "configuration-groups": [
+    {
+      "label": "MQTT Configuration",
+      "properties": [
+        {
+          "name": "brokerUrl",
+          "widget-type": "textbox",
+          "label": "Broker URL"
+        },
+        {
+          "name": "topic",
+          "widget-type": "textbox",
+          "label": "MQTT Topic",
+          "widget-attributes": {
+            "default": "tcp://localhost"
+          }
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "widget-type": "non-editable-schema-editor",
+      "schema": {
+        "name": "schema",
+        "type": "record",
+        "fields": [
+          {
+            "name": "event",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ]
+}
