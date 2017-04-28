@@ -9,15 +9,15 @@
         {
           "name": "brokerUrl",
           "widget-type": "textbox",
-          "label": "Broker URL"
+          "label": "Broker URL",
+          "widget-attributes": {
+            "default": "tcp://localhost"
+          }
         },
         {
           "name": "topic",
           "widget-type": "textbox",
-          "label": "MQTT Topic",
-          "widget-attributes": {
-            "default": "tcp://localhost"
-          }
+          "label": "MQTT Topic"
         }
       ]
     }
