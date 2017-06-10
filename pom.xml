@@ -6,7 +6,7 @@
 
   <groupId>co.cask.hydrator</groupId>
   <artifactId>mqtt-broker-ingestion</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
@@ -61,9 +61,9 @@
     <widgets.dir>widgets</widgets.dir>
     <docs.dir>docs</docs.dir>
     <!-- properties for script build step that creates the config files for the artifacts -->
-    <app.parents>system:cdap-data-streams[4.1.0,4.2.0-SNAPSHOT)</app.parents>
+    <app.parents>system:cdap-data-streams[4.2.0,4.3.0-SNAPSHOT)</app.parents>
     <main.basedir>${project.basedir}</main.basedir>
-    <hydrator.version>1.6.0</hydrator.version>
+    <hydrator.version>1.7.0</hydrator.version>
     <spark.version>1.6.0</spark.version>
   </properties>
 
@@ -72,37 +72,31 @@
       <groupId>co.cask.cdap</groupId>
       <artifactId>cdap-etl-api</artifactId>
       <version>${cdap.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>co.cask.cdap</groupId>
       <artifactId>cdap-etl-api-spark</artifactId>
       <version>${cdap.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>co.cask.hydrator</groupId>
       <artifactId>hydrator-common</artifactId>
       <version>${hydrator.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>co.cask.hydrator</groupId>
       <artifactId>spark-plugins</artifactId>
       <version>${hydrator.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-core_2.10</artifactId>
       <version>${spark.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-streaming_2.10</artifactId>
       <version>${spark.version}</version>
-      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.spark</groupId>
@@ -120,7 +114,7 @@
         <extensions>true</extensions>
         <configuration>
           <instructions>
-            <_exportcontents>co.cask.hydrator.plugin.spark;org.apache.spark.streaming.mqtt</_exportcontents>
+            <_exportcontents>co.cask.hydrator.plugin.spark.*;org.apache.spark.streaming.mqtt.*</_exportcontents>
             <Embed-Dependency>*;inline=false;scope=compile</Embed-Dependency>
             <Embed-Transitive>true</Embed-Transitive>
             <Embed-Directory>lib</Embed-Directory>
