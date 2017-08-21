@@ -22,13 +22,15 @@ import co.cask.cdap.api.annotation.Name;
 import co.cask.cdap.api.annotation.Plugin;
 import co.cask.cdap.api.data.format.StructuredRecord;
 import co.cask.cdap.api.data.schema.Schema;
+import co.cask.cdap.api.plugin.PluginConfig;
 import co.cask.cdap.etl.api.PipelineConfigurer;
 import co.cask.cdap.etl.api.streaming.StreamingContext;
 import co.cask.cdap.etl.api.streaming.StreamingSource;
-import co.cask.hydrator.common.ReferencePluginConfig;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.mqtt.MQTTUtils;
+
+import java.io.Serializable;
 
 /**
  * Source that subscribes to a MQTT broker and listens to it.
@@ -36,7 +38,7 @@ import org.apache.spark.streaming.mqtt.MQTTUtils;
 @Plugin(type = StreamingSource.PLUGIN_TYPE)
 @Name("MQTT")
 @Description("Listens to an MQTT broker and subscribes to a given topic.")
-public class MQTTStreamingSource extends ReferenceStreamingSource<StructuredRecord> {
+public class MQTTStreamingSource extends StreamingSource<StructuredRecord> {
   public static final String FIELD_NAME = "event";
   public static final Schema SCHEMA =
     Schema.recordOf("schema", Schema.Field.of(FIELD_NAME, Schema.of(Schema.Type.STRING)));
@@ -44,7 +46,6 @@ public class MQTTStreamingSource extends ReferenceStreamingSource<StructuredReco
   private final Config config;
 
   public MQTTStreamingSource(Config config) {
-    super(config);
     this.config = config;
   }
 
@@ -60,7 +61,6 @@ public class MQTTStreamingSource extends ReferenceStreamingSource<StructuredReco
       MQTTUtils.createStream(context.getSparkStreamingContext(), config.getBrokerUrl(), config.getTopic());
 
     return mqttStringStream.map(new Function<String, StructuredRecord>() {
-      @Override
       public StructuredRecord call(String input) throws Exception {
         return StructuredRecord.builder(SCHEMA)
           .set(FIELD_NAME, input)
@@ -72,7 +72,9 @@ public class MQTTStreamingSource extends ReferenceStreamingSource<StructuredReco
   /**
    * Configuration for the source.
    */
-  public static class Config extends ReferencePluginConfig {
+  public static class Config extends PluginConfig implements Serializable {
+
+    private static final long serialVersionUID = -8810631081535690190L;
     @Macro
     @Description("The URL of the MQTT broker to connect to.")
     private String brokerUrl;
@@ -81,10 +83,9 @@ public class MQTTStreamingSource extends ReferenceStreamingSource<StructuredReco
     @Description("The MQTT topic to listen to.")
     private String topic;
 
-    public Config() {
-      super(null);
-      this.brokerUrl = "";
-      this.topic = "";
+    public Config(String brokerUrl, String topic) {
+      this.brokerUrl = brokerUrl;
+      this.topic = topic;
     }
 
     private String getBrokerUrl() {

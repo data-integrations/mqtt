@@ -7,6 +7,11 @@
       "label": "MQTT Configuration",
       "properties": [
         {
+          "name": "referenceName",
+          "widget-type": "textbox",
+          "label": "Reference Name"
+        },
+        {
           "name": "brokerUrl",
           "widget-type": "textbox",
           "label": "Broker URL",
