@@ -1,10 +1,11 @@
 MQTT Streaming Source
 =====================
 
+[![cm-available](https://cdap-users.herokuapp.com/assets/cm-available.svg)](https://docs.cask.co/cdap/current/en/integrations/cask-market.html)
 [![Join CDAP community](https://cdap-users.herokuapp.com/badge.svg?t=mqtt)](https://cdap-users.herokuapp.com)
 [![Build Status](https://travis-ci.org/hydrator/mqtt.svg?branch=develop)](https://travis-ci.org/hydrator/mqtt)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![CDAP Realtime Source](cdap-users.herokuapp.com/assets/cdap-realtime-source.svg)](http://docs.cask.co/cdap)
+![cdap-realtime-source](https://cdap-users.herokuapp.com/assets/cdap-realtime-source.svg)
 
 The MQTT Streaming Source allows you to subscribe to an MQTT broker in a streaming context. You
 specify the topic to subscribe to as an MQTT client.
