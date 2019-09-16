@@ -17,20 +17,17 @@
 package io.cdap.plugin.mqtt;
 
 import io.cdap.cdap.api.annotation.Description;
-import io.cdap.cdap.api.annotation.Macro;
 import io.cdap.cdap.api.annotation.Name;
 import io.cdap.cdap.api.annotation.Plugin;
 import io.cdap.cdap.api.data.format.StructuredRecord;
 import io.cdap.cdap.api.data.schema.Schema;
-import io.cdap.cdap.api.plugin.PluginConfig;
+import io.cdap.cdap.etl.api.FailureCollector;
 import io.cdap.cdap.etl.api.PipelineConfigurer;
 import io.cdap.cdap.etl.api.streaming.StreamingContext;
 import io.cdap.cdap.etl.api.streaming.StreamingSource;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.streaming.api.java.JavaDStream;
 import org.apache.spark.streaming.mqtt.MQTTUtils;
-
-import java.io.Serializable;
 
 /**
  * Source that subscribes to a MQTT broker and listens to it.
@@ -43,15 +40,18 @@ public class MQTTStreamingSource extends StreamingSource<StructuredRecord> {
   public static final Schema SCHEMA =
     Schema.recordOf("schema", Schema.Field.of(FIELD_NAME, Schema.of(Schema.Type.STRING)));
 
-  private final Config config;
+  private final MQTTStreamingSourceConfig config;
 
-  public MQTTStreamingSource(Config config) {
+  public MQTTStreamingSource(MQTTStreamingSourceConfig config) {
     this.config = config;
   }
 
   @Override
   public void configurePipeline(PipelineConfigurer pipelineConfigurer) throws IllegalArgumentException {
     super.configurePipeline(pipelineConfigurer);
+    FailureCollector failureCollector = pipelineConfigurer.getStageConfigurer().getFailureCollector();
+    config.validate(failureCollector);
+    failureCollector.getOrThrowException();
     pipelineConfigurer.getStageConfigurer().setOutputSchema(SCHEMA);
   }
 
@@ -67,33 +67,5 @@ public class MQTTStreamingSource extends StreamingSource<StructuredRecord> {
           .build();
       }
     });
-  }
-
-  /**
-   * Configuration for the source.
-   */
-  public static class Config extends PluginConfig implements Serializable {
-
-    private static final long serialVersionUID = -8810631081535690190L;
-    @Macro
-    @Description("The URL of the MQTT broker to connect to.")
-    private String brokerUrl;
-
-    @Macro
-    @Description("The MQTT topic to listen to.")
-    private String topic;
-
-    public Config(String brokerUrl, String topic) {
-      this.brokerUrl = brokerUrl;
-      this.topic = topic;
-    }
-
-    private String getBrokerUrl() {
-      return brokerUrl;
-    }
-
-    private String getTopic() {
-      return topic;
-    }
   }
 }
