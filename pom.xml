@@ -79,7 +79,7 @@
     <widgets.dir>widgets</widgets.dir>
     <cdap.version>6.1.0-SNAPSHOT</cdap.version>
     <hydrator.version>2.2.0</hydrator.version>
-    <junit.version>4.12</junit.version>
+    <junit.version>4.13.1</junit.version>
     <spark.version>1.6.0</spark.version>
   </properties>
 
